@@ -35,9 +35,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, computed, watch } from 'vue'
 import { MDCRipple } from '@material/ripple';
 import logo from './assets/logo.png';
+import addMethodToWebComponent from './addMethodToWebComponentComposable';
 
 
 export default defineComponent({
@@ -58,6 +59,9 @@ export default defineComponent({
     const decrease = () => {
       count.value = count.value - 1;
     };
+
+    addMethodToWebComponent('increase', increase, primaryAction);
+    addMethodToWebComponent('decrease', decrease, primaryAction);
 
     onMounted(() => {
       if(primaryAction.value) MDCRipple.attachTo(primaryAction.value);
