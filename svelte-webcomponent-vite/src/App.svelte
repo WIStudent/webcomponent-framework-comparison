@@ -8,13 +8,13 @@
   let increaseBtn: HTMLButtonElement;
   let decreaseBtn: HTMLButtonElement;
 
-  let count = 0;
+  export let count = 0;
 
-  function increase() {
+  export function increase() {
     count += 1;
   }
 
-  function decrease() {
+  export function decrease() {
     count -= 1;
   }
 
