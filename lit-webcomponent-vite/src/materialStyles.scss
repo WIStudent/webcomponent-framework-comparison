@@ -1,0 +1,6 @@
+@use "@material/card";
+@use "@material/button/styles";
+@use "@material/typography/mdc-typography";
+
+@include card.core-styles;
+
