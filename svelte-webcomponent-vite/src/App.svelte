@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
   import { MDCRipple } from '@material/ripple';
   import logo from './assets/svelte.png';
   import css from './App.scss?inline';
@@ -10,12 +10,16 @@
 
   export let count = 0;
 
+  const dispatch = createEventDispatcher();
+
   export function increase() {
     count += 1;
+    dispatch('count-changed');
   }
 
   export function decrease() {
     count -= 1;
+    dispatch('count-changed')
   }
 
   onMount(() => {
@@ -25,7 +29,13 @@
   });
 </script>
 
-<svelte:options customElement="my-card"/>
+<svelte:options customElement={{
+    tag: 'my-card',
+    props: {
+      count: {reflect: true}
+    }
+  }}
+/>
 
 <svelte:element this="style">{@html css}</svelte:element>
 <div class="mdc-card">
