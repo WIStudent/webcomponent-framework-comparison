@@ -10,7 +10,7 @@
     </div>
 
     <div class="my-card__counter mdc-typography--body1">
-      Counter: {{internalCount}}
+      Counter: {{count}}
     </div>
 
     <div class="mdc-card__actions">
@@ -35,10 +35,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, PropType, watch, toRefs } from 'vue'
+import { defineComponent, ref, onMounted, PropType, toRefs } from 'vue'
 import { MDCRipple } from '@material/ripple';
 import logo from './assets/logo.png';
 import addMethodToWebComponent from './addMethodToWebComponentComposable';
+import getWebcomponentHostComposable from './getWebcomponentHostComposable';
 
 
 export default defineComponent({
@@ -49,25 +50,10 @@ export default defineComponent({
       default: 0
     }
   },
-  emits: ['update:count'],
+  emits: ['count-changed'],
   setup(props, {emit}) {
     const {count} = toRefs(props);
-    const internalCount = ref(0);
 
-    watch(count, count => {
-      internalCount.value = count;
-    }, {immediate: true});
-
-    watch(internalCount, internalCount => {
-      emit('update:count', internalCount);
-    });
-
-    // Issue with prop parsing: https://github.com/vuejs/core/issues/5793
-    watch(count, count => {
-      console.log('count', count);
-      console.log('typeof count', typeof count);
-    }, {immediate: true});
-   
     const primaryAction = ref<HTMLDivElement|null>(null);
     const increaseBtn = ref<HTMLButtonElement|null>(null);
     const decreaseBtn = ref<HTMLButtonElement|null>(null);
@@ -76,12 +62,22 @@ export default defineComponent({
       'background-image': `url(${logo})`
     });
 
+    const host = getWebcomponentHostComposable();
+
     const increase = () => {
-      internalCount.value = internalCount.value + 1;
+      if (host.value) {
+        // @ts-expect-error Too lazy to type this right now
+        host.value.count = count.value + 1;
+        emit('count-changed');
+      }
     };
 
     const decrease = () => {
-      internalCount.value = internalCount.value - 1;
+      if (host.value) {
+        // @ts-expect-error Too lazy to type this right now
+        host.value.count = count.value - 1;
+        emit('count-changed');
+      }
     };
 
     addMethodToWebComponent('increase', increase);
@@ -93,7 +89,7 @@ export default defineComponent({
       if(decreaseBtn.value) MDCRipple.attachTo(decreaseBtn.value);
     });
 
-    return {mediaStyle, internalCount, increase, decrease, primaryAction, increaseBtn, decreaseBtn};
+    return {mediaStyle, increase, decrease, primaryAction, increaseBtn, decreaseBtn};
   }
 });
 </script>
