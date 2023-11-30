@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import { MDCRipple } from '@material/ripple';
   import logo from './assets/svelte.png';
-  import css from './App.scss';
+  import css from './App.scss?inline';
 
   let primaryAction: HTMLDivElement;
   let increaseBtn: HTMLButtonElement;
@@ -25,7 +25,7 @@
   });
 </script>
 
-<svelte:options tag="my-card"/>
+<svelte:options customElement="my-card"/>
 
 <svelte:element this="style">{@html css}</svelte:element>
 <div class="mdc-card">
