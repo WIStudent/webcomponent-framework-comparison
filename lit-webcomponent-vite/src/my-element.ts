@@ -1,7 +1,7 @@
 import { html, css, LitElement, unsafeCSS } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ref, createRef, Ref } from 'lit/directives/ref.js';
-import materialStyles from './materialStyles.scss';
+import materialStyles from './materialStyles.scss?inline';
 import logo from './logo.svg';
 import { MDCRipple } from '@material/ripple';
 
